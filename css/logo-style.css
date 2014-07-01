@@ -1,0 +1,111 @@
+@import url('css/bootstrap.css');
+
+@font-face {
+    font-family: Segoe UI;
+    src: local("Segoe UI"),
+    url(../fonts/segoeui.ttf); 
+   }
+
+body{
+	padding: 0px;
+	margin: 0px;
+	font-family: 'Segoe UI','sens-serif';
+    font-size: 16px;
+
+}
+
+.logobg{
+	background-image: url(../img/hello2.png);
+	width: 100%;
+	height: 100%;
+}
+
+.gl-groupl{
+	font-size: 5em;
+	z-index: 1;
+}
+
+.placeLogo{
+	position: absolute;
+	height: 350px;
+	top: 50%;
+	margin-top: -175px;
+}
+
+.logotxt{
+	margin-top: -50px;
+}
+
+.placecolor{
+	color: #a3241e;
+}
+
+.placecolor::-moz-placeholder {
+  color: #a3241e;
+  opacity: 1;
+}
+.placecolor:-ms-input-placeholder {
+  color: #a3241e;
+}
+.placecolor::-webkit-input-placeholder {
+  color: #a3241e;
+}
+
+.form-control{
+	height: 25px;
+	padding: 0px 12px;
+	font-size: 18px;
+	width: 100%;
+	border-radius: 2px;
+}
+
+.full-text{
+	padding: 0px;
+	color: #6b6b6b;
+}
+
+.full-text a{
+	color: #6b6b6b;
+	text-decoration: underline;
+}
+
+
+
+.btn-default,
+.btn-default:hover,
+.btn-default:focus{
+	background-color: #a3241e;
+	border: 0px;
+	color: white;
+	width: 100%;
+	font-size: 18px;
+	padding: 0 12px;
+	border-radius: 2px;
+}
+
+.logo{
+	position: relative;
+	left: 50%;
+	margin-left: -92px;
+	max-width: 184px;
+	margin-top: 50px;
+	text-align: center;
+}
+
+@media (max-width: 767px) {
+
+	.form-control{
+		max-width: 400px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.btn{
+		position: relative;
+		text-align: center;
+		display: block;
+		max-width: 400px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2014 by original authors @ fontello.com</metadata>
+<defs>
+<font id="gl" horiz-adv-x="1000" >
+<font-face font-family="gl" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="groupl" unicode="&#xe800;" d="m387 816c-2-1-239-233-214-462c20-185 198-298 434-289c221 8 297 50 297 92c0 53-85 82-168 84c90 36 159 53 159 53s158-52 158-161s-148-280-465-280s-588 186-588 452s336 495 356 511c30 24 37 7 31 0z" horiz-adv-x="1064" />
+</font>
+</defs>
+</svg>

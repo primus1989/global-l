@@ -1,0 +1,70 @@
+@import url('bootstrap.css');
+
+@font-face {
+    font-family: Segoe UI;
+    src: url(../fonts/segoeui.ttf);
+    src: local("Segoe UI"), 
+    url(../fonts/segoeui.otf);
+   }
+
+body{
+	padding: 0;
+	margin: 0;
+	background-color: #1a1717;
+	font-family: 'Segoe UI','sens-serif';
+  	font-size: 16px;
+
+}
+
+.row-content{
+	width: 97%;
+}
+
+.table > tbody > tr > td{
+	vertical-align: middle;
+	color: #999999;
+	text-align: center;
+}
+
+.table > tbody > tr.gray-table > td{
+	background-color: #403939;
+}
+
+.text-white{
+	color: #ffffff;
+}
+
+.text-red{
+	color: #d74141;
+}
+
+.text-green{
+	color: #1d6624;
+}
+
+.table > tbody > tr > td.text-green{
+	color: #1d6624;
+}
+
+.table > tbody > tr > td.text-red{
+	color: #d74141;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.table > thead > tr{
+	color: #cccccc;
+	text-align: center;
+}
+
+.table > tbody > tr.black-table > td{
+	background-color: #1c1919;
+}
+
+.btn-link{
+	color: #ffffff;
+}
+
+
