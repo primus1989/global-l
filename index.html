@@ -8,7 +8,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Anton</title>
+  <title>Logo</title>
 
   <!-- Included CSS Files -->
   <link href="css/bootstrap.css" rel="stylesheet">
@@ -81,9 +81,10 @@ var responseText = '';
 	data.append('log', loginGlobal);
 	data.append('pas', passStrGlobal);
 	data.append('period', 1);
+   // data.append('period', 'tree_month');
 
 	
-	
+
 	xhr.send(data);
 	
 	xhr.onload = function() 
@@ -433,10 +434,10 @@ function suggestionsSend()
   	</div>
   	<div id="logo-panel" style="display: none;">
 	    <div class="form-group" style="margin-top: 40px;">
-	      <input type="text" class="form-control placecolor" id="login" placeholder="somemail.@groupl.com">
+	      <input type="text" class="form-control placecolor" id="login" placeholder="somemail.@groupl.com" value="test_user">
 	    </div>
 	    <div class="form-group">
-	      <input type="password" class="form-control" id="pass" placeholder="Password">
+	      <input type="password" class="form-control" id="pass" placeholder="Password" value="test_user">
 	    </div>
 	    <div onclick="loginInit()" class="btn btn-default">Sign In</div>
     </div>
