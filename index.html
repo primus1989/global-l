@@ -246,7 +246,7 @@ var toType = function(obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
 }$(this).data("price")
 alert(toString.call().match(/\s([a-zA-Z]+)/)[1].toLowerCase(););*/
-	var	toInsert3 = str_replace('{price}', $(this).data("price"), toInsert2);
+	var	toInsert3 = str_replace('{price}', $(this).data("price").toString(), toInsert2);
 		$('#generalList').after(toInsert3);
 	});
 
