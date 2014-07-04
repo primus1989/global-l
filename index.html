@@ -31,391 +31,361 @@
 	
 		<script type="text/javascript" charset="utf-8" src="js/pie.js"></script>
 		<script type="text/javascript">
-		
-var url = 'http://group-l.com/api/api.php';
-var loginGlobal = '';
-var passGlobal = '';
-var passStrGlobal = '';
-var saltGlobal = '';
-var userInfoGlobal;
-var portfolioTemlateGlobal;
-var portfolioResponseGlobal;
 
-var portfolioResponseGlobal;
-var portfolioArGlodal = [];
-var feedGlobal;
-var ticketTemlateGlobal;
+      var url = 'http://group-l.com/api/api.php';
+      var loginGlobal = '';
+      var passGlobal = '';
+      var passStrGlobal = '';
+      var saltGlobal = '';
+      var userInfoGlobal;
+      var portfolioTemlateGlobal;
+      var portfolioResponseGlobal;
 
-var generalAdviceResponseGlobal;
+      var portfolioResponseGlobal;
+      var portfolioArGlodal = [];
+      var feedGlobal;
+      var ticketTemlateGlobal;
 
-
-function generalAdvice(period)
-{
-	generalAdviceRequest(period);
-	$('.content').each(function()
-		{
-		
-				$(this).hide();
-					
-		});
-	
-	$('#generalAdviceContainer').show();
-	
-}
-
-function generalAdviceRequest(period)
-{
-var responseText = '';		
-//	task_api=general_recomendations&log=test_user&pas=001376fc756a1f4a382764c335a0874a:A0nwSpO2x2vlmAIz8ek3NbOLXJpqcZeH&period=1
-
-	var xhr = createCORSRequest('POST', 'http://group-l.com/index.php');
-
-    
-	
-	if (!xhr) 
-	{
-		throw new Error('CORS not supported');
-	}
-
-	var data = new FormData();
-	
-	data.append('task_api', 'general_recomendations');
-	data.append('log', loginGlobal);
-	data.append('pas', passStrGlobal);
-	data.append('period', period);
-   // data.append('period', 'tree_month');
-
-	
-
-	xhr.send(data);
-
-	xhr.onload = function() 
-	{	
-		responseText = xhr.responseText;
-		//alert(responseText);
-		//document.getElementById("saltStorage").innerHTML = xhr.responseText;
-		//dump(xhr.responseText);
-		adviceCallBack(xhr.responseText);
-		
-	};
-	
-	xhr.onerror = function(err) 
-	{
-		alert("Сервер не дал доступа");
-	};
-}
-
-function adviceCallBack(response) 
-{
-
-	//portfolioResponseGlobal = portfolio;
-	
-	$('#generalAdviceContainer').find('.row.row-content').each(function(){
-	
-		$(this).remove();
-		
-	});
-	
-	tmpResp = "{" + response.replace(/[\n\r\t]/g, '') + "}";
-	
-	advice = JSON.parse(tmpResp);
-	
-	
-	var arrGreen = $.map(advice.green, function(value, index) {
-		return [value];
-	});	
-	
-	var arrYellow = $.map(advice.yellow, function(value, index) {
-		return [value];
-	});	
-	
-	var arrRed = $.map(advice.red, function(value, index) {
-		return [value];
-	});
-	
-	buildRecomendationsTable(arrGreen, "success");
-	buildRecomendationsTable(arrYellow, "warning");
-	buildRecomendationsTable(arrRed, "danger");
-}
+      var generalAdviceResponseGlobal;
 
 
-function buildRecomendationsTable(colorArr, colorTitle) 
-{
-	
-	if(colorArr !== undefined)
-	{
-		for (var i = 0  in colorArr)
-		{	
-			var tableElement = $.map(colorArr[i], function(value, index) {
-				return [value];	
-			});
-			tableElement.unshift('<input type="checkbox" class="longCheck" value="' + tableElement[1] + '"  data-price="' + tableElement[2] + '" data-ticker="' + tableElement[0] + '" data-paice="' + tableElement[2] + '">');
-			colorArr[i] = tableElement;
-		}
-		
-		var TableTitle = ["Long", "Ticker","Name","Price", "Change $", "Change %"];
-		var TableValue = colorArr;
+      function generalAdvice(period) {
+          generalAdviceRequest(period);
+          $('.content').each(function () {
 
-		var mytable = $('<table/>',{
-                    class:'mytable'
-                }).append(
-                    $('<thead/>'),
-                    $('<tfoot/>'),
-                    $('<tbody/>')
-                );
-	//Наполняем табличку
-	//Заголовок
-	var TitleCell = $('<tr/>');
-	
-		TitleCell.addClass(colorTitle);
-		
-		
-	$.each(TableTitle,function( myIndex, myData ) {
-		TitleCell.append(
-			$('<th/>',{
-				text:myData
-			})
-		);
-	});
-	$("thead",mytable).append(TitleCell);
-	//Данные
-	$.each(TableValue,function(n) {
-		//Переопределяем строку
-		if((n+1)%2==0)
-		{
-			trClass = 'black-table';	
-		}
-		else
-		{
-			trClass = 'gray-table';
-		}
-		
-		var DataCell = $('<tr/>');
-		DataCell.addClass(trClass);
-		
-		//Пробегаемся по ячейкам
-		$.each(this,function() {
-		
-			
-			DataCell.append(
-				$('<td/>',{
-					html:this
-				})
-			);
-		});
-		$("tbody",mytable).append(DataCell);
-			//dump(colorArr);
-			
-		});
-		
-		mytable.addClass('table table-hover');
-		
-		$('#generalAdviceContainer').prepend('<div class="row row-content"><div class="col-xs-12 tableAdviceContainer"></div></div>');
-		$('.tableAdviceContainer:last').append(mytable);
-		
-	}
-	else
-	{
-		alert("No color array!");
-	}
-}
+              $(this).hide();
 
-function generalAdviceAdd(template)
-{
-	
-	$('.content').each(function()
-	{
-				$(this).hide();	
-	});
-	
-	if(!template)
-	{
-		$('#templateContainer').load('template/paperTemplate.html', function(resp){
-			generalAdviceAdd(resp);	
-		});
-		return;
-	}
-	
-	$('#generalAdviceAddContainer').show();
-	
-	alert($('.longCheck:checked').length);
-	$('.longCheck:checked').each(function(){
-		
-	var	toInsert1 = str_replace('{ticker}', $(this).data("ticker"), template);
-	var	toInsert2 = str_replace('{name}', $(this).val(), toInsert1);
-/*
-var toType = function(obj) {
-  return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
-}$(this).data("price")
-alert(toString.call().match(/\s([a-zA-Z]+)/)[1].toLowerCase(););*/
-	var	toInsert3 = str_replace('{price}', $(this).data("price").toString(), toInsert2);
-		$('#generalList').after(toInsert3);
-	});
+          });
 
-}
+          $('#generalAdviceContainer').show();
 
-function savePersonalData() 
-{
-	savePersonalDataRequest();
-}
- 
-function callBackPersonalRecomendations(response)
-{
-//	alert(response);
-		tmpResp = "{" + response.replace(/[\n\r\t]/g, '') + "}";
-	
-	
-	personalRec = JSON.parse(tmpResp);
-	//dump(personalRec);
-	
-	
-	var arrShort= $.map(personalRec.short, function(value, index) {
-		return [value];
-	});	
-	
-	var arrLong = $.map(personalRec.long, function(value, index) {
-		return [value];
-	});	
-	
-	buildPersonalRecomendationsTable(arrShort, "success");
-	buildPersonalRecomendationsTable(arrLong, "danger");
-	
-	
+      }
 
-}
+      function generalAdviceRequest(period) {
+          var responseText = '';
+          //  task_api=general_recomendations&log=test_user&pas=001376fc756a1f4a382764c335a0874a:A0nwSpO2x2vlmAIz8ek3NbOLXJpqcZeH&period=1
 
-function buildPersonalRecomendationsTable(colorArr, colorTitle) 
-{
-	
-	if(colorArr !== undefined)
-	{
-		for (var i = 0  in colorArr)
-		{	
-			var tableElement = $.map(colorArr[i], function(value, index) {
-				return [value];	
-			});
-			tableElement.unshift('<input type="checkbox" class="longCheck" value="' + tableElement[1] + '"  data-price="' + tableElement[2] + '" data-ticker="' + tableElement[0] + '">');
-			colorArr[i] = tableElement;
-		}
-		
-		var TableTitle = ["Long", "Ticker","Name", "Sector", "Last", "Change $", "Change %", "Amount", "Basic", "Risk $", "Risk %", "Potential", "Point"];
-		var TableValue = colorArr;
-
-		var mytable = $('<table/>',{
-                    class:'mytable'
-                }).append(
-                    $('<thead/>'),
-                    $('<tfoot/>'),
-                    $('<tbody/>')
-                );
-	//Наполняем табличку
-	//Заголовок
-	var TitleCell = $('<tr/>');
-	
-		TitleCell.addClass(colorTitle);
-		
-		
-	$.each(TableTitle,function( myIndex, myData ) {
-		TitleCell.append(
-			$('<th/>',{
-				text:myData
-			})
-		);
-	});
-	$("thead",mytable).append(TitleCell);
-	//Данные
-	$.each(TableValue,function(n) {
-		//Переопределяем строку
-		if((n+1)%2==0)
-		{
-			trClass = 'black-table';	
-		}
-		else
-		{
-			trClass = 'gray-table';
-		}
-		
-		var DataCell = $('<tr/>');
-		DataCell.addClass(trClass);
-		
-		//Пробегаемся по ячейкам
-		$.each(this,function() {
-		
-			
-			DataCell.append(
-				$('<td/>',{
-					html:this
-				})
-			);
-		});
-		$("tbody",mytable).append(DataCell);
-			//dump(colorArr);
-			
-		});
-		
-		mytable.addClass('table table-hover');
-		
-		$('#personalRecomendationsContainer').prepend('<div class="row row-content"><div class="col-xs-12 tableAdviceContainer"></div></div>');
-		$('.tableAdviceContainer:last').append(mytable);
-		
-	}
-	else
-	{
-		alert("No color array!");
-	}
-}
-
-function suggestions()
-{
-	$('.content').each(function()
-	{
-				$(this).hide();	
-	});
-	
-	$("#suggestionsContainer").show();
-}
+          var xhr = createCORSRequest('POST', 'http://group-l.com/index.php');
 
 
-function suggestionsSend()
-{
-	var responseText = '';		
-	
-	var xhr = createCORSRequest('POST', 'http://group-l.com/api/api.php');
-	
-	if (!xhr) 
-	{
-		throw new Error('CORS not supported');
-	}
 
-	var data = new FormData();
-	
-	var message = "<table><tbody><tr><td> Ticker: </td><td>" + $('#tickerInput').val() + "</td></tr><tr><td>  Name: </td><td>" + $('#userInput').val() + "</td></tr>                             <tr><td> Sum of the investment: </td><td>" + $('#emailInput').val() + "</td></tr><tr><td>Term of the investments: </td><td>" + $('#termInput').val() + "</td></tr>                            <tr><td> Comments: </td><td>" + $('#commentsInput').val() + "</td></tr></tbody></table>";
-	
+          if (!xhr) {
+              throw new Error('CORS not supported');
+          }
 
-	data.append('task', 'feedback_add');
-	data.append('log', loginGlobal);
-	data.append('pas', passStrGlobal);
-	data.append('message', message);
-	
-	
-	xhr.send(data);
-	
-	xhr.onload = function() 
-	{	
-		responseText = xhr.responseText;
-		//alert(responseText);
-		//document.getElementById("saltStorage").innerHTML = xhr.responseText;
-		callBackFeed(xhr.responseText);
-		
-	};
-	
-	xhr.onerror = function(err) 
-	{
-		alert("Сервер не дал доступа");
-	};
+          var data = new FormData();
 
-	feedBack();
-}
+          data.append('task_api', 'general_recomendations');
+          data.append('log', loginGlobal);
+          data.append('pas', passStrGlobal);
+          data.append('period', period);
+          // data.append('period', 'tree_month');
+
+
+
+          xhr.send(data);
+
+          xhr.onload = function () {
+              responseText = xhr.responseText;
+              //alert(responseText);
+              //document.getElementById("saltStorage").innerHTML = xhr.responseText;
+              //dump(xhr.responseText);
+              adviceCallBack(xhr.responseText);
+
+          };
+
+          xhr.onerror = function (err) {
+              alert("Сервер не дал доступа");
+          };
+      }
+
+      function adviceCallBack(response) {
+
+          //portfolioResponseGlobal = portfolio;
+
+          $('#generalAdviceContainer').find('.row.row-content').each(function () {
+
+              $(this).remove();
+
+          });
+
+          tmpResp = "{" + response.replace(/[\n\r\t]/g, '') + "}";
+
+          advice = JSON.parse(tmpResp);
+
+
+          var arrGreen = $.map(advice.green, function (value, index) {
+              return [value];
+          });
+
+          var arrYellow = $.map(advice.yellow, function (value, index) {
+              return [value];
+          });
+
+          var arrRed = $.map(advice.red, function (value, index) {
+              return [value];
+          });
+
+          buildRecomendationsTable(arrGreen, "success");
+          buildRecomendationsTable(arrYellow, "warning");
+          buildRecomendationsTable(arrRed, "danger");
+      }
+
+
+      function buildRecomendationsTable(colorArr, colorTitle) {
+
+          if (colorArr !== undefined) {
+              for (var i = 0 in colorArr) {
+                  var tableElement = $.map(colorArr[i], function (value, index) {
+                      return [value];
+                  });
+                  tableElement.unshift('<input type="checkbox" class="longCheck" value="' + tableElement[1] + '"  data-price="' + tableElement[2] + '" data-ticker="' + tableElement[0] + '" data-paice="' + tableElement[2] + '">');
+                  colorArr[i] = tableElement;
+              }
+
+              var TableTitle = ["Long", "Ticker", "Name", "Price", "Change $", "Change %"];
+              var TableValue = colorArr;
+
+              var mytable = $('<table/>', {
+                  class: 'mytable'
+              }).append(
+                          $('<thead/>'),
+                          $('<tfoot/>'),
+                          $('<tbody/>')
+                      );
+              //Наполняем табличку
+              //Заголовок
+              var TitleCell = $('<tr/>');
+
+              TitleCell.addClass(colorTitle);
+
+
+              $.each(TableTitle, function (myIndex, myData) {
+                  TitleCell.append(
+                  $('<th/>', {
+                      text: myData
+                  })
+              );
+              });
+              $("thead", mytable).append(TitleCell);
+              //Данные
+              $.each(TableValue, function (n) {
+                  //Переопределяем строку
+                  if ((n + 1) % 2 == 0) {
+                      trClass = 'black-table';
+                  }
+                  else {
+                      trClass = 'gray-table';
+                  }
+
+                  var DataCell = $('<tr/>');
+                  DataCell.addClass(trClass);
+
+                  //Пробегаемся по ячейкам
+                  $.each(this, function () {
+
+
+                      DataCell.append(
+                      $('<td/>', {
+                          html: this
+                      })
+                  );
+                  });
+                  $("tbody", mytable).append(DataCell);
+                  //dump(colorArr);
+
+              });
+
+              mytable.addClass('table table-hover');
+
+              $('#generalAdviceContainer').prepend('<div class="row row-content"><div class="col-xs-12 tableAdviceContainer"></div></div>');
+              $('.tableAdviceContainer:last').append(mytable);
+
+          }
+          else {
+              alert("No color array!");
+          }
+      }
+
+      function generalAdviceAdd(template) {
+
+          $('.content').each(function () {
+              $(this).hide();
+          });
+
+          if (!template) {
+              $('#templateContainer').load('template/paperTemplate.html', function (resp) {
+                  generalAdviceAdd(resp);
+              });
+              return;
+          }
+
+          $('#generalAdviceAddContainer').show();
+          getPortfolioListRequest();
+
+          $('.longCheck:checked').each(function () {
+
+              var toInsert1 = str_replace('{ticker}', $(this).data("ticker"), template);
+              var toInsert2 = str_replace('{name}', $(this).val(), toInsert1);
+              /*
+              var toType = function(obj) {
+              return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+              }$(this).data("price")
+              alert(toString.call().match(/\s([a-zA-Z]+)/)[1].toLowerCase(););*/
+              var toInsert3 = str_replace('{price}', $(this).data("price").toString(), toInsert2);
+              $('#generalList').after(toInsert3);
+          });
+
+      }
+
+      function savePersonalData() {
+          savePersonalDataRequest();
+      }
+
+      function callBackPersonalRecomendations(response) {
+          //  alert(response);
+          tmpResp = "{" + response.replace(/[\n\r\t]/g, '') + "}";
+
+
+          personalRec = JSON.parse(tmpResp);
+          //dump(personalRec);
+
+
+          var arrShort = $.map(personalRec.short, function (value, index) {
+              return [value];
+          });
+
+          var arrLong = $.map(personalRec.long, function (value, index) {
+              return [value];
+          });
+
+          buildPersonalRecomendationsTable(arrShort, "success");
+          buildPersonalRecomendationsTable(arrLong, "danger");
+
+
+
+      }
+
+      function buildPersonalRecomendationsTable(colorArr, colorTitle) {
+
+          if (colorArr !== undefined) {
+              for (var i = 0 in colorArr) {
+                  var tableElement = $.map(colorArr[i], function (value, index) {
+                      return [value];
+                  });
+                  tableElement.unshift('<input type="checkbox" class="longCheck" value="' + tableElement[1] + '"  data-price="' + tableElement[2] + '" data-ticker="' + tableElement[0] + '">');
+                  colorArr[i] = tableElement;
+              }
+
+              var TableTitle = ["Long", "Ticker", "Name", "Sector", "Last", "Change $", "Change %", "Amount", "Basic", "Risk $", "Risk %", "Potential", "Point"];
+              var TableValue = colorArr;
+
+              var mytable = $('<table/>', {
+                  class: 'mytable'
+              }).append(
+                          $('<thead/>'),
+                          $('<tfoot/>'),
+                          $('<tbody/>')
+                      );
+              //Наполняем табличку
+              //Заголовок
+              var TitleCell = $('<tr/>');
+
+              TitleCell.addClass(colorTitle);
+
+
+              $.each(TableTitle, function (myIndex, myData) {
+                  TitleCell.append(
+                  $('<th/>', {
+                      text: myData
+                  })
+              );
+              });
+              $("thead", mytable).append(TitleCell);
+              //Данные
+              $.each(TableValue, function (n) {
+                  //Переопределяем строку
+                  if ((n + 1) % 2 == 0) {
+                      trClass = 'black-table';
+                  }
+                  else {
+                      trClass = 'gray-table';
+                  }
+
+                  var DataCell = $('<tr/>');
+                  DataCell.addClass(trClass);
+
+                  //Пробегаемся по ячейкам
+                  $.each(this, function () {
+
+
+                      DataCell.append(
+                      $('<td/>', {
+                          html: this
+                      })
+                  );
+                  });
+                  $("tbody", mytable).append(DataCell);
+                  //dump(colorArr);
+
+              });
+
+              mytable.addClass('table table-hover');
+
+              $('#personalRecomendationsContainer').prepend('<div class="row row-content"><div class="col-xs-12 tableAdviceContainer"></div></div>');
+              $('.tableAdviceContainer:last').append(mytable);
+
+          }
+          else {
+              alert("No color array!");
+          }
+      }
+
+      function suggestions() {
+          $('.content').each(function () {
+              $(this).hide();
+          });
+
+          $("#suggestionsContainer").show();
+      }
+
+
+      function suggestionsSend() {
+          var responseText = '';
+
+          var xhr = createCORSRequest('POST', 'http://group-l.com/api/api.php');
+
+          if (!xhr) {
+              throw new Error('CORS not supported');
+          }
+
+          var data = new FormData();
+
+          var message = "<table><tbody><tr><td> Ticker: </td><td>" + $('#tickerInput').val() + "</td></tr><tr><td>  Name: </td><td>" + $('#userInput').val() + "</td></tr>                             <tr><td> Sum of the investment: </td><td>" + $('#emailInput').val() + "</td></tr><tr><td>Term of the investments: </td><td>" + $('#termInput').val() + "</td></tr>                            <tr><td> Comments: </td><td>" + $('#commentsInput').val() + "</td></tr></tbody></table>";
+
+
+          data.append('task', 'feedback_add');
+          data.append('log', loginGlobal);
+          data.append('pas', passStrGlobal);
+          data.append('message', message);
+
+
+          xhr.send(data);
+
+          xhr.onload = function () {
+              responseText = xhr.responseText;
+              //alert(responseText);
+              //document.getElementById("saltStorage").innerHTML = xhr.responseText;
+              callBackFeed(xhr.responseText);
+
+          };
+
+          xhr.onerror = function (err) {
+              alert("Сервер не дал доступа");
+          };
+
+          feedBack();
+      }
 		</script>
 	
     <!--[if IE 7]>
@@ -612,15 +582,24 @@ function suggestionsSend()
 					  <div class="row">
 						<div class="col-sm-9 col-xs-12" style="padding-top: 10px; margin-left: -10px;">Select portfolio:
 						<div class="btn-group" style="padding-left: 0px;">
-						  <button type="button" class="btn btn-black dropdown-toggle text-white head-txt" data-toggle="dropdown" style="margin-top: -3px;">Virtual portfolio #1 <span class="caret"></span>
+						  <button type="button" class="btn btn-black dropdown-toggle text-white head-txt" data-toggle="dropdown" style="margin-top: -3px;"><span class="caret"></span>
 						  </button>
-						  <ul class="dropdown-menu">
-							<li class="text-white head-txt"><a href="#">Virtual portfolio #2</a></li>
-							<li class="text-white head-txt"><a href="#">Virtual portfolio #3</a></li>
-							<li class="text-white head-txt"><a href="#">Virtual portfolio #4</a></li>
-							<li class="text-white head-txt"><a href="#">Virtual portfolio #5</a></li>
+						  <ul id="listOfPortfolio" role="menu" class="dropdown-menu">
 						  </ul>
 						</div>
+                            <div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+    Dropdown
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+    <li role="presentation" class="divider"></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+  </ul>
+</div>
 						</div>
 					  </div>
 				  </div>
@@ -631,89 +610,9 @@ function suggestionsSend()
 			  </div>
 			</div>
 			<div class="void12"></div>
-				<div class="row paper-bg">
-				  <div class="col-xs-12">  
-						<div class="row">
-						  <div class="col-xs-12 add-line">
-							<div class="row del-btn">
-							  <div class="col-xs-4 col-sm-3 pull-left head-txt text-white" style="padding-left: 30px;">Paper#1</div>
-							  <div class="col-xs-4 col-sm-2 pull-right"><a href="#" class="delete-btn">delete</a></div>
-							</div>
-						  </div>
-						</div>
-						<div class="row add-line">
-						  <div class="col-xs-12 col-sm-2">Ticker:</div>
-						  <div class="col-xs-6 col-sm-3"><span class="text-white">BAA</span> - Boeing Actual Company</div>
-						  <div class="col-xs-6 col-sm-7">Last: <span class="text-white">39,18$</span></div>
-						</div>
-						<div class="row add-line">
-						  <div class="col-xs-6 col-sm-2">Shares:</div>
-						  <div class="col-xs-6 col-sm-10">123 456</div>
-						</div>
-						<div class="row add-line">
-						  <div class="col-xs-6 col-sm-2">Price:</div>
-						  <div class="col-xs-6 col-sm-10">123 456$</div>
-						</div>
-						<div class="row add-line">
-						  <div class="col-xs-6 col-sm-2">Type:</div>
-						  <div class="col-xs-6 col-sm-10">
-							<div class="btn-group">
-							  <button type="button" class="btn btn-default group-mark head-txt">buy</button>
-							  <button type="button" class="btn btn-default group-mark2 head-txt">sell</button>
-							</div>
-						  </div>
-						</div>
-						<div class="row add-line">
-						  <div class="col-xs-4 col-sm-2">Date:</div>
-						  <div class="col-xs-5 col-sm-3">
-							<input type="date" class="form-control textboxAdd">
-						  </div>
-						  <div class="col-xs-1 col-sm-1" style="padding-left :0px;"><i class="fa fa-calendar fa-2x"></i></div>
-						</div>
-				  </div>
-				</div>
+			
 						<div class="void12"></div>
-				<div class="row paper-bg">
-				  <div class="col-xs-12">  
-						<div class="row">
-						  <div class="col-xs-12 add-line">
-							<div class="row del-btn">
-							  <div class="col-xs-4 col-sm-3 pull-left head-txt text-white" style="padding-left: 30px;">Paper#2</div>
-							  <div class="col-xs-4 col-sm-2 pull-right"><a href="#" class="delete-btn">delete</a></div>
-							</div>
-						  </div>
-						</div>
-						<div class="row add-line">
-						  <div class="col-xs-12 col-sm-2">Ticker:</div>
-						  <div class="col-xs-6 col-sm-3"><span class="text-white">TEX</span> - Boeing Actual Company</div>
-						  <div class="col-xs-6 col-sm-7">Last: <span class="text-white">39,18$</span></div>
-						</div>
-						<div class="row add-line">
-						  <div class="col-xs-6 col-sm-2">Shares:</div>
-						  <div class="col-xs-6 col-sm-10 text-white">123 456</div>
-						</div>
-						<div class="row add-line">
-						  <div class="col-xs-6 col-sm-2">Price:</div>
-						  <div class="col-xs-6 col-sm-10 text-white">123 456$</div>
-						</div>
-						<div class="row add-line">
-						  <div class="col-xs-6 col-sm-2">Type:</div>
-						  <div class="col-xs-6 col-sm-10">
-							<div class="btn-group">
-							  <button type="button" class="btn btn-default group-mark head-txt">buy</button>
-							  <button type="button" class="btn btn-default group-mark2 head-txt">sell</button>
-							</div>
-						  </div>
-						</div>
-						<div class="row add-line">
-						  <div class="col-xs-4 col-sm-2">Date:</div>
-						  <div class="col-xs-5 col-sm-3">
-							<input type="date" class="form-control textboxAdd">
-						  </div>
-						  <div class="col-xs-1 col-sm-1" style="padding-left :0px;"><i class="fa fa-calendar fa-2x"></i></div>
-						</div>
-				  </div>
-				</div>
+				
 				<div class="row">
 				  <div class="col-sm-12">
 				  <div class="void25"></div>
@@ -999,7 +898,7 @@ function suggestionsSend()
 	      </div>
 	      <div class="modal-footer" style="border-top: 0;">
 	        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="background: #666666; color: white;border: 0;width: 75px;">Back</button>
-	        <button type="button" class="btn btn-primary" style="background: #339933; color: white;border: 0;width: 75px;">Ok</button>
+	        <button type="button" class="btn btn-primary" onclick="addNewPortfolio()" style="background: #339933; color: white;border: 0;width: 75px;">Ok</button>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->

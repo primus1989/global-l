@@ -237,3 +237,20 @@ function callBackFeed(feedJSON, template)
 		
 	
 }
+
+function callBackPortfolioList(portfolio)
+{
+
+	portfolioResponseGlobal = portfolio;
+	portfolioList = JSON.parse(portfolio);
+
+	if(portfolioList.portfolio.length!=0)
+	{
+		for (var i  in portfolioList.portfolio)
+		{
+            $("#listOfPortfolio").append("<li class='text-white head-txt'><a href=#>"+portfolioList.portfolio[i].portfolioName+"</a></li>");
+		}
+
+	}
+
+}

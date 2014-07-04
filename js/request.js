@@ -311,8 +311,69 @@ function sendFeedBack()
 	{
 		alert("Сервер не дал доступа");
 	};
+ }
+
+  function addNewPortfolio() {
+	
+	
+	var xhr = createCORSRequest('POST', 'http://group-l.com/index.php');
+	
+	if (!xhr) 
+	{
+		throw new Error('CORS not supported');
+	}
+
+	var data = new FormData();
+
+	data.append('option', 'com_finance');
+    data.append('task_api', 'trading_portfolio');
+	data.append('log', loginGlobal);
+	data.append('pas', passStrGlobal);
+	data.append('name_portfolio', 'testPortfolio');;
+	
+	
+	xhr.send(data);
+	alert(data)
+	xhr.onload = function() 
+	{	
+		responseText = xhr.responseText;
+		callBackPersonalRecomendations(xhr.responseText);
+	};
+	
+	xhr.onerror = function(err) 
+	{
+		alert("Сервер не дал доступа");
+	};
 	
 	
 
 
  }
+
+ function getPortfolioListRequest()
+{			
+	var responseText = '';		
+	
+	var xhr = createCORSRequest('POST', url);
+	
+	if (!xhr) 
+	{
+		throw new Error('CORS not supported');
+	}
+	
+	var data = new FormData();
+	//.com/api/api.php?task=portfolio&log=test_user&pas=001376fc756a1f4a382764c335a0874a:A0nwSpO2x2vlmAIz8ek3NbOLXJpqcZeH&user_id=65
+	data.append('task', 'portfolio');
+	data.append('log', loginGlobal);
+	data.append('pas', passStrGlobal);
+	data.append('user_id', userInfoGlobal.ID);
+	xhr.send(data);
+	
+	xhr.onload = function() 
+	{
+		//document.getElementById("saltStorage").innerHTML = xhr.responseText;
+		callBackPortfolioList(xhr.responseText);
+		
+	};
+	
+}
