@@ -294,7 +294,7 @@ function feedBack()
 	//p?task=feedback&log=test_user&pas=001376fc756a1f4a382764c335a0874a:A0nwSpO2x2vlmAIz8ek3NbOLXJpqcZeH - feedback
 }
 
- function personalRecomendations() {
+ function personalRecomendations(period) {
  
  
 	$('.content').each(function()
@@ -303,7 +303,7 @@ function feedBack()
 	});
 	
 	$('#personalRecomendationsContainer').show();
-	personalRecomendationsRequest();
+	personalRecomendationsRequest(period);
 
  }		 
 

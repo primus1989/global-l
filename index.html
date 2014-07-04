@@ -49,9 +49,9 @@ var ticketTemlateGlobal;
 var generalAdviceResponseGlobal;
 
 
-function generalAdvice()
+function generalAdvice(period)
 {
-	generalAdviceRequest();
+	generalAdviceRequest(period);
 	$('.content').each(function()
 		{
 		
@@ -63,12 +63,14 @@ function generalAdvice()
 	
 }
 
-function generalAdviceRequest()
+function generalAdviceRequest(period)
 {
 var responseText = '';		
 //	task_api=general_recomendations&log=test_user&pas=001376fc756a1f4a382764c335a0874a:A0nwSpO2x2vlmAIz8ek3NbOLXJpqcZeH&period=1
 
 	var xhr = createCORSRequest('POST', 'http://group-l.com/index.php');
+
+    
 	
 	if (!xhr) 
 	{
@@ -80,13 +82,13 @@ var responseText = '';
 	data.append('task_api', 'general_recomendations');
 	data.append('log', loginGlobal);
 	data.append('pas', passStrGlobal);
-	data.append('period', 1);
+	data.append('period', period);
    // data.append('period', 'tree_month');
 
 	
 
 	xhr.send(data);
-	
+
 	xhr.onload = function() 
 	{	
 		responseText = xhr.responseText;
@@ -468,7 +470,7 @@ function suggestionsSend()
         <div class="col-xs-12 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
           <ul class="list-group">
             <li><a href="#" class="list-group-item">News<i class="fa fa-angle-right fa-2x"></i></a></li>
-            <li><a href="#" onclick="generalAdvice()" class="list-group-item">Advice<i class="fa fa-angle-right fa-2x"></i></a></li>
+            <li><a href="#" onclick="generalAdvice(1)" class="list-group-item">Advice<i class="fa fa-angle-right fa-2x"></i></a></li>
             <li><a href="#" onclick="getPortfolioList()" class="list-group-item">Portfolios<i class="fa fa-angle-right fa-2x"></i></a></li>
             <li><a href="#" onclick="personalRecomendations()" class="list-group-item">Recommendations<i class="fa fa-angle-right fa-2x"></i></a></li>
             <li><a href="#" onclick="suggestions()" class="list-group-item">Suggestions<i class="fa fa-angle-right fa-2x"></i></a></li>
@@ -485,13 +487,12 @@ function suggestionsSend()
 				<div class="col-sm-12">
 				  <div class="row">
 					<div class="col-xs-12 col-sm-8">
-					  <ul class="pagination text-right">
-						<li><a href="#">1d</a></li>
-						<li><a href="#">5d</a></li>
-						<li><a href="#">1m</a></li>
-						<li><a href="#">3m</a></li>
-						<li><a href="#">6m</a></li>
-						<li><a href="#">all</a></li>
+					 <ul class="pagination text-right">
+						<li><a href="#" onclick="personalRecomendations(1)">this week</a></li>
+						<li><a href="#" onclick="personalRecomendations(2)">3 m</a></li>
+						<li><a href="#" onclick="personalRecomendations(3)">6 m</a></li>
+                        <li><a href="#" onclick="personalRecomendations(4)">1 year</a></li>
+						<li><a href="#" onclick="personalRecomendations(5)">All</a></li>
 					  </ul>
 
 					</div>
@@ -537,12 +538,11 @@ function suggestionsSend()
 				  <div class="row">
 					<div class="col-xs-12 col-sm-7">
 					  <ul class="pagination">
-						<li><a href="#">1d</a></li>
-						<li><a href="#">5d</a></li>
-						<li><a href="#">1m</a></li>
-						<li><a href="#">3m</a></li>
-						<li><a href="#">6m</a></li>
-						<li><a href="#">all</a></li>
+						<li><a href="#" onclick="generalAdvice(1)">this week</a></li>
+						<li><a href="#" onclick="generalAdvice(2)">3 m</a></li>
+						<li><a href="#" onclick="generalAdvice(3)">6 m</a></li>
+                        <li><a href="#" onclick="generalAdvice(4)">1 year</a></li>
+						<li><a href="#" onclick="generalAdvice(5)">All</a></li>
 					  </ul>
 
 					</div>

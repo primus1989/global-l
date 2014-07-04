@@ -280,7 +280,7 @@ function sendFeedBack()
 
  }
  
-  function personalRecomendationsRequest() {
+  function personalRecomendationsRequest(period) {
 	
 	
 	var xhr = createCORSRequest('POST', 'http://group-l.com/index.php');
@@ -296,6 +296,7 @@ function sendFeedBack()
 	data.append('log', loginGlobal);
 	data.append('pas', passStrGlobal);
 	data.append('type', 'long');
+    data.append('period', period);
 	
 	
 	xhr.send(data);
