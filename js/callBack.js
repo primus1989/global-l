@@ -238,7 +238,7 @@ function callBackFeed(feedJSON, template)
 	
 }
 
-function callBackPortfolioList(portfolio)
+function callBackPortfolioList(portfolio,flag)
 {
 
 	portfolioResponseGlobal = portfolio;
@@ -246,9 +246,13 @@ function callBackPortfolioList(portfolio)
 
 	if(portfolioList.portfolio.length!=0)
 	{
-        $("#dropdownMenu1").html(portfolioList.portfolio[0].portfolioName);
+        $("#listOfPortfolio li").remove();
+        if(flag==true)
+        $("#dropdownMenu1").html(portfolioList.portfolio[1].portfolioName);
+
 		for (var i  in portfolioList.portfolio)
 		{
+            if(portfolioList.portfolio[i].portfolioName.trim()!="Trading portfolio")
             $("#listOfPortfolio").append("<li role='presentation' class='text-white head-txt'><a role='menuitem' tabindex='-1' href='#' onclick='setDropdownMenu(this)'>"+portfolioList.portfolio[i].portfolioName+"</a></li>");
 		}
 

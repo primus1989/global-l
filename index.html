@@ -221,9 +221,13 @@
           }
 
           $('#generalAdviceAddContainer').show();
-          getPortfolioListRequest();
+          getPortfolioListRequest(true);
+
+          var count = 0;
 
           $('.longCheck:checked').each(function () {
+             
+              count=count+1;
 
               var toInsert1 = str_replace('{ticker}', $(this).data("ticker"), template);
               var toInsert2 = str_replace('{name}', $(this).val(), toInsert1);
@@ -233,7 +237,9 @@
               }$(this).data("price")
               alert(toString.call().match(/\s([a-zA-Z]+)/)[1].toLowerCase(););*/
               var toInsert3 = str_replace('{price}', $(this).data("price").toString(), toInsert2);
-              $('#generalList').after(toInsert3);
+              var toInsert4 = str_replace('{paperNumber}', count.toString(), toInsert3);
+ 
+              $('#generalList').after(toInsert4);
           });
 
       }
@@ -389,10 +395,49 @@
 
       function setDropdownMenu(linkText) {
           $("#dropdownMenu1").html(linkText);
-          getPortfolioListRequest();
+          getPortfolioListRequest(false);
       }
 
-    
+      function addPaperToPortfolio() {
+          var responseText = '';
+          //  task_api=general_recomendations&log=test_user&pas=001376fc756a1f4a382764c335a0874a:A0nwSpO2x2vlmAIz8ek3NbOLXJpqcZeH&period=1
+
+          var xhr = createCORSRequest('POST', 'http://group-l.com/index.php');
+
+          if (!xhr) {
+              throw new Error('CORS not supported');
+          }
+
+          var data = new FormData();
+
+          data.append('task_api', 'trading_portfolio');
+          data.append('log', loginGlobal);
+          data.append('pas', passStrGlobal);
+          data.append('id_pp', 8);
+          data.append('cod_paper_t_p_text', 8);
+          data.append('t_p_count_paper', 8);
+          data.append('t_p_price_paper', 8);
+          data.append('type_paper', 'short');
+          data.append('t_p_date_by_paper', '2014-07-05');
+
+          xhr.send(data);
+
+          xhr.onload = function () {
+              responseText = xhr.responseText;
+              alert(responseText)
+              //alert(responseText);
+              //document.getElementById("saltStorage").innerHTML = xhr.responseText;
+              //dump(xhr.responseText);
+              //  adviceCallBack(xhr.responseText);
+
+          };
+
+          xhr.onerror = function (err) {
+              alert("Сервер не дал доступа");
+          };
+      }
+
+
 		</script>
 	
     <!--[if IE 7]>
@@ -626,7 +671,7 @@
 				<div class="void25"></div>
 				  <div class="row">
 					<div class="col-xs-12 col-sm-5 col-sm-offset-7 decor-btn">
-					  <a href="#" class="btn btn-green btn-link pull-right"><b>Add papers</b></a>
+					  <a href="#" onclick="addPaperToPortfolio()" class="btn btn-green btn-link pull-right"><b>Add papers</b></a>
 					</div>              
 				  </div>
 				</div>

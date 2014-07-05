@@ -350,8 +350,8 @@ function sendFeedBack()
 
  }
 
- function getPortfolioListRequest()
-{			
+ function getPortfolioListRequest(flag)
+ {
 	var responseText = '';		
 	
 	var xhr = createCORSRequest('POST', url);
@@ -372,8 +372,9 @@ function sendFeedBack()
 	xhr.onload = function() 
 	{
 		//document.getElementById("saltStorage").innerHTML = xhr.responseText;
-		callBackPortfolioList(xhr.responseText);
+		callBackPortfolioList(xhr.responseText,flag);
 		
 	};
 	
 }
+
