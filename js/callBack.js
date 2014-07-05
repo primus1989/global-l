@@ -246,9 +246,10 @@ function callBackPortfolioList(portfolio)
 
 	if(portfolioList.portfolio.length!=0)
 	{
+        $("#dropdownMenu1").html(portfolioList.portfolio[0].portfolioName);
 		for (var i  in portfolioList.portfolio)
 		{
-            $("#listOfPortfolio").append("<li class='text-white head-txt'><a href=#>"+portfolioList.portfolio[i].portfolioName+"</a></li>");
+            $("#listOfPortfolio").append("<li role='presentation' class='text-white head-txt'><a role='menuitem' tabindex='-1' href='#' onclick='setDropdownMenu(this)'>"+portfolioList.portfolio[i].portfolioName+"</a></li>");
 		}
 
 	}
